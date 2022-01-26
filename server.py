@@ -12,15 +12,35 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def render_homepage():
     """Renders homepage if a user is logged in"""
-    # user_id = session['user_id']
-    # if "user_id" in session:
-    #     return render_template("home.html")
-    # else:
-    return redirect('/register')
+    user_id = session['user_id']
+    if "user_id" in session:
+        return render_template("home.html")
+    else:
+        return redirect('/login')
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login():
     """Logs user in and redirects to homepage"""
+    session.clear()
+
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+
+        user = crud.get_user_by_username(username)
+
+        if user:
+            user_id = user.user_id
+
+            if crud.check_password(username, password):
+                flash('Welcome!')
+                session['user_id'] = user_id
+                return redirect('/')
+            else:
+                flash('Incorrect Password')
+        else:
+            flash('Invalid username')
+
     return render_template("login.html")
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -32,6 +52,7 @@ def register_user():
 
         crud.register_user(username=username, password=password)
         flash('registered!')
+        
     return render_template("registration.html")
 
 if __name__ == "__main__":

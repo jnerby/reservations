@@ -3,7 +3,18 @@ from flask import session
 from model import db, User, Reservation
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
+def check_password(username, password):
+    """Checks user password"""
+    user = get_user_by_username(username)
+    return check_password_hash(user.password_hash, password)
+
+def get_user_by_username(username):
+    """Returns user object"""
+    return User.query.filter_by(username=username).first()
+
 def register_user(username, password):
+    """Registers new user to users table"""
     new_user = User(username=username, password_hash=generate_password_hash(password))
     
     db.session.add(new_user)
