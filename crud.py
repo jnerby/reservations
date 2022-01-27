@@ -1,6 +1,8 @@
 """CRUD Function"""
 from flask import session
 from model import db, User, Reservation
+from datetime import date
+from sqlalchemy import cast, Date
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -8,6 +10,10 @@ def check_password(username, password):
     """Checks user password"""
     user = get_user_by_username(username)
     return check_password_hash(user.password_hash, password)
+
+def get_existing_appts(appt_date):
+    """Get all appointments booked within time frame user searched"""
+    return Reservation.query.filter(cast(Reservation.date, Date)==appt_date).all()
 
 def get_user_by_username(username):
     """Returns user object"""
