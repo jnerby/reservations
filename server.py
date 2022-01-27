@@ -25,15 +25,21 @@ def render_homepage():
 def search_appointments():
     """Searches for user appointments"""
     if request.method == "POST":
+        # get and format appointment date
         appt_date = datetime.fromisoformat(request.form['appt-date']).date()
-        start_time = request.form['start-time']
-        end_time = request.form['end-time']
+        
+        start_time = datetime.strptime('09:00', '%H:%M').time()
+        end_time = datetime.strptime('18:00', '%H:%M').time()
+        if request.form['start-time']:
+            start_time = datetime.strptime(request.form['start-time'], '%H:%M').time()
+        if request.form['end-time']:
+            end_time = datetime.strptime(request.form['end-time'], '%H:%M').time()
 
         # Get all appointments booked during user's window
         existing_appts = crud.get_existing_appts(appt_date)
 
-        available_appts = helpers.get_available_appts(existing_appts, appt_date, start_time, end_time)
-
+        # get all available time slots
+        available_appts = helpers.get_available_appts(existing_appts, appt_date, start_time=start_time, end_time=end_time)
         return render_template('home.html')
     return redirect('/')
 
