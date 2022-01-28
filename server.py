@@ -21,6 +21,13 @@ def render_homepage():
         return redirect('/login')
 
 
+@app.route('/appts')
+def show_user_appts():
+    """Shows users current appointments"""
+    user_id = session['user_id']
+    user_appts = crud.get_appts_by_user_id(user_id)
+    return render_template("my_appts.html", user_appts=user_appts)
+
 @app.route('/search', methods=['GET', 'POST'])
 def search_appointments():
     """Searches for user appointments"""
@@ -40,7 +47,9 @@ def search_appointments():
 
         # get all available time slots
         available_appts = helpers.get_available_appts(existing_appts, appt_date, start_time=start_time, end_time=end_time)
-        return render_template('home.html')
+        print(available_appts)
+        return render_template('results.html', available_appts=available_appts)
+
     return redirect('/')
 
 @app.route('/login', methods=['GET', 'POST'])

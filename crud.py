@@ -11,6 +11,10 @@ def check_password(username, password):
     user = get_user_by_username(username)
     return check_password_hash(user.password_hash, password)
 
+
+def get_appts_by_user_id(user_id):
+    return Reservation.query.filter_by(user_id=user_id).all()
+
 def get_existing_appts(appt_date):
     """Get all appointments booked within time frame user searched"""
     return Reservation.query.filter(cast(Reservation.date, Date)==appt_date).all()
