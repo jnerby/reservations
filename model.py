@@ -40,7 +40,6 @@ class Reservation(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False)
     date = db.Column(db.DateTime)
-    start_time = db.Column(db.DateTime)
 
     def __repr__(self):
         return f"<Reservation user_id={self.user_id} date={self.date}"
