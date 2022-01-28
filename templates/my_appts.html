@@ -5,10 +5,19 @@
 {% block content%}
     {% if user_appts %}
         <h4>My Appointments</h4>
-        {% for appt in user_appts %}
-            <p>{{ appt.date }}</p>
-        {% endfor %}
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Start Time</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for appt in user_appts %}
+                <tr>
+                    <th scope="row">{{ appt.date }}</th>
+                </tr>
+            {% endfor %}
     {% else %}
-    <h4>No Available Appointments</h4>
+    <h4>You currently have no appointments</h4>
     {% endif %}
 {% endblock %}

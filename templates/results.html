@@ -5,10 +5,25 @@
 {% block content%}
     {% if available_appts %}
         <h4>Available Appointments</h4>
-        {% for appt in available_appts %}
-            <p>{{appt}}</p>
-        {% endfor %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Start Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for appt in available_appts %}
+            <tr>
+                <th scope="row">{{ appt }}</th>
+                <td><button id="{{ appt }}" class="btn btn-outline-info book-appt-btn">Book</button></td>
+            </tr>
+            {% endfor %}
     {% else %}
-    <h4>No Available Appointments</h4>
+        <h4>No Available Appointments</h4>
     {% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+<script src="static/js/book.js"></script>
 {% endblock %}

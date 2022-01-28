@@ -1,16 +1,22 @@
 """CRUD Function"""
-from flask import session
+from flask import app, session
 from model import db, User, Reservation
 from datetime import date
 from sqlalchemy import cast, Date
 from werkzeug.security import generate_password_hash, check_password_hash
 
+def book_appt(user_id, appt_time):
+    new_appt = Reservation(user_id=user_id, date=appt_time)
+
+    db.session.add(new_appt)
+    db.session.commit()
+
+    # return new_appt
 
 def check_password(username, password):
     """Checks user password"""
     user = get_user_by_username(username)
     return check_password_hash(user.password_hash, password)
-
 
 def get_appts_by_user_id(user_id):
     return Reservation.query.filter_by(user_id=user_id).all()
