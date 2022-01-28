@@ -20,6 +20,7 @@ def get_available_appts(user_id, existing_appts, appt_date, start_time, end_time
     user_appt_dates = {appt.date.date() for appt in user_appts}
 
     appointment_slot = start
+    
     while appointment_slot <= end:
         if appointment_slot not in unavailable_slots and appointment_slot.date() not in user_appt_dates:
             result.append(appointment_slot)
